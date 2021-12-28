@@ -1,44 +1,40 @@
-﻿using System.IO;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
 
-namespace Day1
+Console.WriteLine("Day 1");
+var sw = Stopwatch.StartNew();
+Part1();
+Part2();
+Console.WriteLine($"END (after {sw.Elapsed.TotalSeconds} seconds)");
+
+static void Part1()
 {
-	class Program
+	var floor = 0;
+	foreach (var c in ReadInput())
 	{
-		static void Main(string[] args)
-		{
-			Part1();
-			Part2();
-		}
+		floor += (c == '(' ? 1 : -1);
+	}
+	Console.WriteLine($"floor: {floor}");
+}
 
-		private static void Part2()
+static void Part2()
+{
+	var floor = 0;
+	var pos = 0;
+	foreach (var c in ReadInput())
+	{
+		pos++;
+		floor += (c == '(' ? 1 : -1);
+		if (floor == -1)
 		{
-			var floor = 0;
-			var pos = 0;
-			foreach (var c in ReadInput())
-			{
-				pos++;
-				floor += (c == '(' ? 1 : -1);
-				if (floor == -1)
-				{
-					break;
-				}
-			}
-			System.Console.WriteLine($"pos: {pos}");
-		}
-
-		private static void Part1()
-		{
-			var floor = 0;
-			foreach (var c in ReadInput())
-			{
-				floor += (c == '(' ? 1 : -1);
-			}
-			System.Console.WriteLine($"floor: {floor}");
-		}
-
-		private static string ReadInput()
-		{
-			return File.ReadAllText("input.txt");
+			break;
 		}
 	}
+	Console.WriteLine($"pos: {pos}");
+}
+
+static string ReadInput()
+{
+	return File.ReadAllText("input.txt");
 }
