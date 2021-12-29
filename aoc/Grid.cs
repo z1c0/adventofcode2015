@@ -33,6 +33,11 @@ namespace aoc
 			}
 		}
 
+		public void Clear()
+		{
+			Fill(default);
+		}
+
 		public Grid<T> Resize(int newWidth, int newHeight)
 		{
 			var newGrid = new Grid<T>(newWidth, newHeight);
@@ -226,15 +231,11 @@ namespace aoc
 			}
 		}
 
-		public Dictionary<T, int> CountAdjacent4Distinct(int x, int y)
-		{
-			return GetAdjacentDistinct(x, y, false);
-		}
+		public Dictionary<T, int> CountAdjacent4Distinct((int X, int Y) p) => GetAdjacentDistinct(p.X, p.Y, false);
+		public Dictionary<T, int> CountAdjacent4Distinct(int x, int y) => GetAdjacentDistinct(x, y, false);
 
-		public Dictionary<T, int> CountAdjacent8Distinct(int x, int y)
-		{
-			return GetAdjacentDistinct(x, y, true);
-		}
+		public Dictionary<T, int> CountAdjacent8Distinct((int X, int Y) p) => GetAdjacentDistinct(p.X, p.Y, true);
+		public Dictionary<T, int> CountAdjacent8Distinct(int x, int y) => GetAdjacentDistinct(x, y, true);
 
 		private Dictionary<T, int> GetAdjacentDistinct(int x, int y, bool all)
 		{
@@ -317,7 +318,12 @@ namespace aoc
 		public static Grid<char> ReadCharGrid(string fileName = "input.txt") => ParseCharGrid(File.ReadAllLines(fileName));
 		public static Grid<char> ParseCharGrid(IEnumerable<string> lines) => ParseGrid(lines, c => c);
 
-		private static Grid<T> ParseGrid<T>(IEnumerable<string> lines, Func<char, T> converter) where T : struct
+		public static Grid<bool> ReadBoolGrid(char isTrue = '#', string fileName = "input.txt") => ParseBoolGrid(File.ReadAllLines(fileName), isTrue);
+		public static Grid<bool> ParseBoolGrid(IEnumerable<string> lines, char isTrue = '#') => ParseGrid(lines, c => c == isTrue);
+
+		public static Grid<T> ReadGrid<T>(Func<char, T> converter, string fileName = "input.txt") where T : struct
+			=> ParseGrid(File.ReadLines(fileName), converter);
+		public static Grid<T> ParseGrid<T>(IEnumerable<string> lines, Func<char, T> converter) where T : struct
 		{
 			var h = lines.Count();
 			var w = lines.First().Length;
